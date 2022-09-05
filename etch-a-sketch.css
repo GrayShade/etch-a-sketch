@@ -1,0 +1,161 @@
+body {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(45deg, black, transparent);
+    height: 100vh;
+    margin: 0px;
+    overflow: hidden;
+    /* justify-content: center; */
+    align-items: center;
+    font-family: system-ui;
+    font-style: oblique;
+}
+
+#header {
+    display: flex;
+    border: 1px solid black;
+    height: 10%;
+    width: 100%;
+    margin-bottom: 1%;
+    /* box-shadow: rgba(0, 0, 0, 0.2) 2px 4px 16px; */
+    justify-content: center;
+    align-items: center;
+    background-color: #001f3f;
+}
+
+#header span {
+    /* font-weight: bold; */
+    color: #FFFFFF;
+    font-size: 32px;
+
+}
+
+#container {
+    display: flex;
+    height: 85%;
+    flex-basis: fit-content;
+    max-width: 100%;
+    overflow-x: auto;
+    outline-offset: -1px;
+    box-shadow: rgba(0, 0, 0, 0.2) 2px 4px 16px;
+    border-radius: 10px 0px 0px 10px;
+    justify-content: space-between;
+    
+    
+}
+
+#grid {
+
+    display: flex;
+    flex-direction: column;
+    /* background-color: #FFFFFF; */
+    height: 100%;
+    width: 612px;
+    /* use below two lines for preventing a few pixels between parent container & children due to display scaling like 125%. 
+        Using border in this case was creating problem discussed in above line on some systems. 2px outline helped further 
+    in this regard.*/
+    /* outline: 2px solid grey;
+    outline-offset: -1px; */
+    box-shadow: rgba(0, 0, 0, 0.2) 2px 4px 16px;
+    /* border-radius: 0; */
+    
+    
+}
+
+.subContainer {
+    display: flex;
+    flex-direction: row;
+    background: #FFFFFF;
+}
+
+.square {
+    display: flex;
+    border: 1px solid #DDDDDD;
+    flex: 1 1 0;
+    aspect-ratio: 1;
+
+}
+
+#sidebar {
+    display: flex;
+    background: #001f3f;
+    height: 100%;
+    width: 20%;
+    max-width: 20%;
+    padding: 0px 20px;
+    margin-right: 1%;
+    outline: grey solid 2px;
+    outline-offset: -1px;
+    box-shadow: rgba(0, 0, 0, 0.2) 2px 4px 16px;
+    border-radius: 10px 10px 10px 10px;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+#divGridText {
+    
+    display: flex;
+    flex-direction: column;
+    margin: 7% 10% 0%;
+}
+
+#gridText {
+    margin: 1% 0% 2%;
+    border-radius: 13px;
+    padding: 3%;
+    border: 1px solid black;
+    /* color: #FFFFFF;*/
+}
+
+#gridText::placeholder{
+    font-family: system-ui;
+    font-style: oblique;
+}
+
+#labelGridText {
+    color: #FFFFFF;
+}
+
+#labelGridSlider {
+    color: #FFFFFF;
+}
+
+
+#divControlBtns {
+    display: flex;
+    flex-direction: column;
+    margin: 0% 0% 7%;
+}
+
+.controlBtns, #BtnCreateGrid {
+    font-family: system-ui;
+    font-style: oblique;
+    color: #FFFFFF;
+    border-radius: 25px;
+    /* background: #eee; */
+    
+    /* padding: 8px 0px; */
+    border: none;
+}
+
+#BtnCreateGrid {
+    margin: 1% 0%;
+    padding: 7px 0px;
+    background: #3D9970;
+}
+
+.controlBtns {
+    margin: 1% 10%;
+    padding: 8px 0px;
+    background: #FF851B;
+}
+
+#BtnClearGrid {
+    background: #FF4136;
+}
+
+/* #BtnEraser {
+    background: #FFDC00;
+} */
+
+
