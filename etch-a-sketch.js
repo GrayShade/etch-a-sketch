@@ -17,7 +17,7 @@ function createGrid(gridSize, e = undefined, pencilOrEraser) {
 
     }
     fillSquareColor();
-    // eraseSquareColor();
+    // eraserWorking();
 }
 
 function fillSquareColor() {
@@ -55,8 +55,24 @@ function removePreviousGrid() {
 
 }
 
-function eraseSquareColor() {
-    debugger;
+function pencilWorking() {
+
+    const getSquares = document.querySelectorAll('.square');
+    getSquares.forEach(squareNod => {
+        squareNod.addEventListener('mousemove', (e) => {
+            e.preventDefault(); 
+
+            if (e.buttons == 1) {
+
+                squareNod.style.background = 'black';
+            }
+        });
+
+    });
+}
+
+function eraserWorking() {
+    // debugger;
     const getSquares = document.querySelectorAll('.square');
     getSquares.forEach(squareNod => {
         squareNod.addEventListener('mousemove', (e) => {
@@ -123,8 +139,10 @@ buttonRandomGrid.addEventListener('click', (e) => {
     document.getElementById('gridText').value = randomNum;
 });
 
+const buttonPencil = document.getElementById('btnPencil');
+buttonPencil.addEventListener('click', pencilWorking);
 const buttonEraser = document.getElementById('btnEraser');
-buttonEraser.addEventListener('click', eraseSquareColor);
+buttonEraser.addEventListener('click', eraserWorking);
 
 
 
