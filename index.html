@@ -17,21 +17,27 @@
     <div id="header"><span>Etch-A-Sketch</span></div>
     <div id="container">
         <div id="sidebar">
-            <div id="divGridText">
-                <label for="gridText"><span id="labelGridText">Enter Grid Size:</span></label>
+            <div id="divBarUpper">
+                <label for="gridText" id="labelGridText">Enter Grid Size:</label>
                 <input type="number" id="gridText" placeholder=" From 1 to 100..." required minlength=1 maxlength=100>
                 <p id="pText">OR</p>
-                <label for="gridSlider"><span id="labelGridSlider">Set Grid Size:</span></label>
+                <label for="gridSlider" id="labelGridSlider">Set Grid Size:</label>
                 <input type="range" id="gridSlider" placeholder=" From 1 to 100..." oninput="" required min=1 max=100>
-                <button id="btnResetGrid">Reset Grid</button>
+                <!-- <button id="btnResetGrid">Reset Grid</button> -->
+
+                <label for="labelPickColor" id="labelPickColor">Select Color:</label>
+                <input type="color" id="inputPickColor" value="black">
+                <button id="btnRandomGrid">Random Grid</button>
             </div>
-            <div id="divControlBtns">
-                            <!-- <label for="createGridBtn"></label> -->
-                <button class="controlBtns" id="btnRandomGrid">Random Grid</button>
-                <button class="controlBtns" id="btnPencil">Pencil</button>
-                <button class="controlBtns" id="btnEraser">Eraser</button>
-                <button class="controlBtns" id="btnColorSwitch">Color Mode</button>
+            <div id="divBarLower">
+                <!-- <label for="createGridBtn"></label> -->
+                <button class="barLowerBtn" id="btnResetGrid">Reset Grid</button>
+                <!-- <button class="barLowerBtn" id="btnRandomGrid">Random Grid</button> -->
+                <button class="barLowerBtn" id="btnPencil">Pencil</button>
+                <button class="barLowerBtn" id="btnEraser">Eraser</button>
                 
+
+
             </div>
 
         </div>

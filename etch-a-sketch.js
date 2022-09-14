@@ -56,11 +56,20 @@ function removePreviousGrid() {
 }
 
 function pencilWorking() {
+    // changing button colors to indicate active button & remove 
+    //  previously active button:
+    const buttonPencil = document.getElementById('btnPencil');
+    buttonPencil.style.background = '#3D9970';
+    const buttonEraser = document.getElementById('btnEraser');
+    buttonEraser.style.background = '#FF851B';
 
     const getSquares = document.querySelectorAll('.square');
     getSquares.forEach(squareNod => {
         squareNod.addEventListener('mousemove', (e) => {
+
             e.preventDefault(); 
+
+
 
             if (e.buttons == 1) {
 
@@ -72,11 +81,18 @@ function pencilWorking() {
 }
 
 function eraserWorking() {
-    // debugger;
+
+    const buttonEraser = document.getElementById('btnEraser');
+    buttonEraser.style.background = '#3D9970';
+    const buttonPencil = document.getElementById('btnPencil');
+    buttonPencil.style.background = '#FF851B';
+
     const getSquares = document.querySelectorAll('.square');
     getSquares.forEach(squareNod => {
         squareNod.addEventListener('mousemove', (e) => {
             e.preventDefault(); 
+
+
 
             if (e.buttons == 1) {
 
