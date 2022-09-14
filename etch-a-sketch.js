@@ -1,5 +1,5 @@
 // e is an optional parameter here.
-function createGrid(gridSize, e = undefined) {
+function createGrid(gridSize, e = undefined, pencilOrEraser) {
 
     for (let i = 1; i <= gridSize; i++) {
 
@@ -17,6 +17,7 @@ function createGrid(gridSize, e = undefined) {
 
     }
     fillSquareColor();
+    // eraseSquareColor();
 }
 
 function fillSquareColor() {
@@ -33,8 +34,7 @@ function fillSquareColor() {
     // https://stackoverflow.com/questions/46186173/are-mousemove-events-disabled-while-dragging-an-element
     // So, to prevent drag:
             e.preventDefault(); 
-            // works by preventing default handling of event i think. But documentation mentions default
-            debugger;
+            // works by preventing default handling of event i think. But documentation mentions default action prevention.  
             if (e.buttons == 1) {
 
                 squareNod.style.background = 'black';
@@ -53,6 +53,22 @@ function removePreviousGrid() {
         gridNode.removeChild(gridNode.lastElementChild);
     }
 
+}
+
+function eraseSquareColor() {
+    debugger;
+    const getSquares = document.querySelectorAll('.square');
+    getSquares.forEach(squareNod => {
+        squareNod.addEventListener('mousemove', (e) => {
+            e.preventDefault(); 
+
+            if (e.buttons == 1) {
+
+                squareNod.style.background = '#FFFFFF';
+            }
+        });
+
+    });
 }
 
 //  default grid at start:
@@ -103,10 +119,12 @@ buttonRandomGrid.addEventListener('click', (e) => {
     const randomNum = Math.floor(Math.random() * 100) + 1;
     removePreviousGrid();
     createGrid(randomNum);
+    getGridSlider.value = randomNum;
+    document.getElementById('gridText').value = randomNum;
 });
 
-
-
+const buttonEraser = document.getElementById('btnEraser');
+buttonEraser.addEventListener('click', eraseSquareColor);
 
 
 
