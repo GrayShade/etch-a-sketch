@@ -116,6 +116,15 @@ body {
     color: #FFFFFF;
 }
 
+#pText {
+    margin: 0px;
+    align-self: center;
+    color: #FFFFFF;
+    /* font-family: system-ui;
+    font-style: oblique; */
+
+}
+
 #labelGridSlider {
     color: #FFFFFF;
 }
@@ -127,7 +136,7 @@ body {
     margin: 0% 0% 7%;
 }
 
-.controlBtns, #BtnCreateGrid {
+.controlBtns, #btnResetGrid {
     font-family: system-ui;
     font-style: oblique;
     color: #FFFFFF;
@@ -138,7 +147,7 @@ body {
     border: none;
 }
 
-#BtnCreateGrid {
+#btnResetGrid {
     margin: 1% 0%;
     padding: 7px 0px;
     background: #3D9970;
@@ -150,7 +159,7 @@ body {
     background: #FF851B;
 }
 
-#BtnClearGrid {
+#btnRandomGrid {
     background: #FF4136;
 }
 

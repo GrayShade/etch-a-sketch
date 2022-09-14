@@ -19,16 +19,17 @@
         <div id="sidebar">
             <div id="divGridText">
                 <label for="gridText"><span id="labelGridText">Enter Grid Size:</span></label>
-                <input type="number" id="gridText" placeholder=" From 1 to 100..." required min=1 max=100>
+                <input type="number" id="gridText" placeholder=" From 1 to 100..." required minlength=1 maxlength=100>
+                <p id="pText">OR</p>
                 <label for="gridSlider"><span id="labelGridSlider">Set Grid Size:</span></label>
                 <input type="range" id="gridSlider" placeholder=" From 1 to 100..." oninput="" required min=1 max=100>
-                <button id="BtnCreateGrid">Create Grid</button>
+                <button id="btnResetGrid">Reset Grid</button>
             </div>
             <div id="divControlBtns">
                             <!-- <label for="createGridBtn"></label> -->
-                <button class="controlBtns" id="BtnClearGrid">Clear Grid</button>
-                <button class="controlBtns" id="BtnEraser">Eraser</button>
-                <button class="controlBtns" id="BtnColorSwitch">Color Mode</button>
+                <button class="controlBtns" id="btnRandomGrid">Random Size</button>
+                <button class="controlBtns" id="btnEraser">Eraser</button>
+                <button class="controlBtns" id="btnColorSwitch">Color Mode</button>
                 
             </div>
 
