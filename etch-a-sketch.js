@@ -1,5 +1,5 @@
 // e is an optional parameter here.
-function createGrid(gridSize, e = undefined, pencilOrEraser) {
+function createGrid(gridSize) {
 
     for (let i = 1; i <= gridSize; i++) {
 
@@ -16,11 +16,15 @@ function createGrid(gridSize, e = undefined, pencilOrEraser) {
         }
 
     }
-    fillSquareColor();
+    const inputColorNode = document.getElementById('inputColor').value;
+    fillSelectedColor(inputColorNode);
     // eraserWorking();
 }
 
-function fillSquareColor() {
+
+
+function fillSelectedColor(inputColorNode = '#111111') { // <== use black color if none selected
+
     //  Below listener is in a function to be called again & 
     // again whenever we are creating grid without page refresh because 
     // when squares are removed on creating a new grid, below related 
@@ -28,21 +32,57 @@ function fillSquareColor() {
     const getSquares = document.querySelectorAll('.square');
     getSquares.forEach(squareNod => {
         squareNod.addEventListener('mousemove', (e) => {
-    // "The mousemove event is fired when a pointing device (usually a mouse) 
-    // is moved while over an element." When you're dragging the element, mouse 
-    // is not moving over it - instead it moves synchronously with the element. 
-    // https://stackoverflow.com/questions/46186173/are-mousemove-events-disabled-while-dragging-an-element
-    // So, to prevent drag:
-            e.preventDefault(); 
+            // "The mousemove event is fired when a pointing device (usually a mouse) 
+            // is moved while over an element." When you're dragging the element, mouse 
+            // is not moving over it - instead it moves synchronously with the element. 
+            // https://stackoverflow.com/questions/46186173/are-mousemove-events-disabled-while-dragging-an-element
+            // So, to prevent drag on trying to hold and move mouse :
+            e.preventDefault();
             // works by preventing default handling of event i think. But documentation mentions default action prevention.  
             if (e.buttons == 1) {
-
-                squareNod.style.background = 'black';
+                // could call the inputColor function here, but it would have called that function 
+                // again & again instead of just at changing color at color input.
+                squareNod.style.background = inputColorNode;
             }
         });
+        //  to also allow color fill on the simple click too:
+        squareNod.addEventListener('click', (e) => {
+            e.preventDefault();
+            squareNod.style.background = inputColorNode;
+        })
+
 
     });
 
+}
+
+function fillRandomColors() {
+        // listener does not work & has to be created again. 
+        const getSquares = document.querySelectorAll('.square');
+        getSquares.forEach(squareNod => {
+            squareNod.addEventListener('mousemove', (e) => {
+
+                e.preventDefault();
+
+                if (e.buttons == 1) {
+                    squareNod.style.background = createRandomHsl();
+                    // squareNod.removeEventListener('mousemove', e);
+                }
+            });
+
+            squareNod.addEventListener('click', (e) => {
+
+                squareNod.style.background = createRandomHsl();
+                // squareNod.removeEventListener('click', e);
+            });
+    
+    
+        });
+}
+
+function createRandomHsl() {
+    const randomHsl = `hsla(${Math.random() * 360}, 100%, 50%, 1)`;
+    return randomHsl;
 }
 
 function removePreviousGrid() {
@@ -63,21 +103,37 @@ function pencilWorking() {
     const buttonEraser = document.getElementById('btnEraser');
     buttonEraser.style.background = '#FF851B';
 
+
     const getSquares = document.querySelectorAll('.square');
     getSquares.forEach(squareNod => {
         squareNod.addEventListener('mousemove', (e) => {
 
-            e.preventDefault(); 
-
-
+            e.preventDefault();
 
             if (e.buttons == 1) {
+                debugger;
+                const inputColorNode = document.getElementById('inputColor').value;
+                squareNod.style.background = inputColorNode;
+                
+            }
+        });
 
-                squareNod.style.background = 'black';
+        squareNod.addEventListener('click', (e) => {
+
+            // e.preventDefault();
+
+            if (e.buttons == 1) {
+                debugger;
+                const inputColorNode = document.getElementById('inputColor').value;
+                squareNod.style.background = inputColorNode;
+                // debugger;
             }
         });
 
     });
+
+    // const inputColorNode = document.getElementById('inputColor').value;
+    // fillSelectedColor(inputColorNode);
 }
 
 function eraserWorking() {
@@ -90,9 +146,7 @@ function eraserWorking() {
     const getSquares = document.querySelectorAll('.square');
     getSquares.forEach(squareNod => {
         squareNod.addEventListener('mousemove', (e) => {
-            e.preventDefault(); 
-
-
+            e.preventDefault();
 
             if (e.buttons == 1) {
 
@@ -110,7 +164,7 @@ const getGridSlider = document.getElementById('gridSlider');
 
 const getGridText = document.getElementById('gridText');
 getGridText.addEventListener('input', (e) => {
-   
+
     if (e.target.value == null || e.target.value == '' || e.target.value > 100) {
         getGridText.value = 16;
     }
@@ -118,7 +172,7 @@ getGridText.addEventListener('input', (e) => {
     removePreviousGrid();
     getGridSlider.value = getGridText.value;
     createGrid(getGridText.value);
-    
+
 });
 
 // The input event is fired every time the value of the element changes. 
@@ -137,9 +191,13 @@ getGridSlider.addEventListener('input', () => {
 
 });
 
+const inputColorNode = document.getElementById('inputColor');
+//  if input color is other than black, then add the listener with that instead. 
+inputColorNode.onchange = (e) => fillSelectedColor(inputColorNode.value);
+
 const buttonResetGrid = document.getElementById('btnResetGrid');
 buttonResetGrid.addEventListener('click', () => {
-    // debugger;
+
     removePreviousGrid();
     createGrid(16);
     getGridSlider.value = 16;
@@ -159,6 +217,39 @@ const buttonPencil = document.getElementById('btnPencil');
 buttonPencil.addEventListener('click', pencilWorking);
 const buttonEraser = document.getElementById('btnEraser');
 buttonEraser.addEventListener('click', eraserWorking);
+
+const buttonRainbow = document.getElementById('btnRainbow');
+buttonRainbow.addEventListener('click', fillRandomColors)
+
+function fillSquares(inputColor = '#111111', colorPencil = 'false') {
+    // for default sketch...
+    const inputColorNode = document.getElementById(inputColor);
+    const getSquares = document.querySelectorAll('.square');
+    getSquares.forEach(squareNod => {
+        squareNod.addEventListener('mousemove', (e) => {
+            // "The mousemove event is fired when a pointing device (usually a mouse) 
+            // is moved while over an element." When you're dragging the element, mouse 
+            // is not moving over it - instead it moves synchronously with the element. 
+            // https://stackoverflow.com/questions/46186173/are-mousemove-events-disabled-while-dragging-an-element
+            // So, to prevent drag on trying to hold and move mouse :
+            e.preventDefault();
+            // works by preventing default handling of event i think. But documentation mentions default action prevention.  
+            if (e.buttons == 1) {
+                // could call the inputColor function here, but it would have called that function 
+                // again & again instead of just at changing color at color input.
+                squareNod.style.background = inputColorNode;
+            }
+        });
+        //  to also allow color fill on the simple click too:
+        squareNod.addEventListener('click', (e) => {
+            e.preventDefault();
+            squareNod.style.background = inputColorNode;
+        })
+
+
+    });
+
+}
 
 
 
