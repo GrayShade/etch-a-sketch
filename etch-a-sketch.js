@@ -174,10 +174,10 @@ function pencilWorking() {
 
 function eraserWorking() {
 
-    const buttonEraser = document.getElementById('btnEraser');
-    buttonEraser.style.background = '#3D9970';
-    const buttonPencil = document.getElementById('btnPencil');
-    buttonPencil.style.background = '#FF851B';
+    // const buttonEraser = document.getElementById('btnEraser');
+    // buttonEraser.style.background = '#3D9970';
+    // const buttonPencil = document.getElementById('btnPencil');
+    // buttonPencil.style.background = '#FF851B';
 
     const getSquares = document.querySelectorAll('.square');
     getSquares.forEach(squareNod => {
@@ -187,6 +187,15 @@ function eraserWorking() {
             if (e.buttons == 1) {
 
                 squareNod.style.background = '#FFFFFF';
+            }
+        });
+        squareNod.addEventListener('click', (e) => {
+
+            // e.preventDefault();
+
+            if (e.buttons == 1) {
+                squareNod.style.background = '#FFFFFF';
+                // debugger;
             }
         });
 
@@ -250,34 +259,34 @@ buttonRandomGrid.addEventListener('click', (e) => {
 });
 
 //  below flag is used to alternate between simple & color modes: 
-let colorFlag = false;
+let typeFlag = 'selected';
 const buttonPencil = document.getElementById('btnPencil');
 buttonPencil.addEventListener('click', e => {
-    changeButtonColor(e);
+
+    typeFlag = 'selected';
     // changing button colors to indicate active button & remove 
     //  previously active button:
-    colorFlag = false;
+    changeButtonColor(e);
     fillSquares(e)
 });
-const buttonEraser = document.getElementById('btnEraser');
-buttonEraser.addEventListener('click', e => {
-    changeButtonColor(e);
-    eraserWorking();
-});
+
 
 const buttonRainbow = document.getElementById('btnRainbow');
 buttonRainbow.addEventListener('click', e => {
+    typeFlag = 'random';
     changeButtonColor(e);
-    colorFlag = true;
     fillSquares(e);
 });
 
-
-
+const buttonEraser = document.getElementById('btnEraser');
+buttonEraser.addEventListener('click', e => {
+    typeFlag = 'eraser';
+    changeButtonColor(e);
+    fillSquares();
+});
 
 function fillSquares() {
-    // for default sketch...
-    // if(!inp)
+
     const inputColorNode = document.getElementById('inputColor').value;
     const getSquares = document.querySelectorAll('.square');
     //  Below listener is in a function to be called again & 
@@ -297,21 +306,33 @@ function fillSquares() {
             if (e.buttons == 1) {
                 // could call the inputColor function here, but it would have called that function 
                 // again & again instead of just at changing color at color input.
-                if (colorFlag == true) { // to choose whether to use color pencil or simple
-                    squareNod.style.background = createRandomHsl();
-                } else {
+                if (typeFlag == 'selected') { // to choose whether to use color pencil or simple
                     squareNod.style.background = inputColorNode;
-                }
+
+                } else
+                    if (typeFlag == 'random') {
+                        squareNod.style.background = createRandomHsl();
+                    }
+                    else
+                        if (typeFlag == 'eraser') {
+                            squareNod.style.background = '#FFFFFF';
+                        }
             }
         });
         //  to also allow color fill on the simple click too:
         squareNod.addEventListener('click', (e) => {
             // e.preventDefault();
-            if (colorFlag == true) {
-                squareNod.style.background = createRandomHsl();
-            } else {
+            if (typeFlag == 'selected') { // to choose whether to use color pencil or simple
                 squareNod.style.background = inputColorNode;
-            }
+
+            } else
+                if (typeFlag == 'random') {
+                    squareNod.style.background = createRandomHsl();
+                }
+                else
+                    if (typeFlag == 'eraser') {
+                        squareNod.style.background = '#FFFFFF';
+                    }
         })
 
 
