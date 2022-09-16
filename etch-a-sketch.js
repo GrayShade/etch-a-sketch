@@ -16,8 +16,8 @@ function createGrid(gridSize) {
         }
 
     }
-    const inputColorNode = document.getElementById('inputColor').value;
-    fillSelectedColor(inputColorNode);
+    // const inputColorNode = document.getElementById('inputColor').value;
+    fillSquares();
     // eraserWorking();
 }
 
@@ -57,27 +57,27 @@ function fillSelectedColor(inputColorNode = '#111111') { // <== use black color 
 }
 
 function fillRandomColors() {
-        // listener does not work & has to be created again. 
-        const getSquares = document.querySelectorAll('.square');
-        getSquares.forEach(squareNod => {
-            squareNod.addEventListener('mousemove', (e) => {
+    // listener does not work & has to be created again. 
+    const getSquares = document.querySelectorAll('.square');
+    getSquares.forEach(squareNod => {
+        squareNod.addEventListener('mousemove', (e) => {
 
-                e.preventDefault();
+            e.preventDefault();
 
-                if (e.buttons == 1) {
-                    squareNod.style.background = createRandomHsl();
-                    // squareNod.removeEventListener('mousemove', e);
-                }
-            });
-
-            squareNod.addEventListener('click', (e) => {
-
+            if (e.buttons == 1) {
                 squareNod.style.background = createRandomHsl();
-                // squareNod.removeEventListener('click', e);
-            });
-    
-    
+                // squareNod.removeEventListener('mousemove', e);
+            }
         });
+
+        squareNod.addEventListener('click', (e) => {
+
+            squareNod.style.background = createRandomHsl();
+            // squareNod.removeEventListener('click', e);
+        });
+
+
+    });
 }
 
 function createRandomHsl() {
@@ -95,7 +95,41 @@ function removePreviousGrid() {
 
 }
 
+function changeButtonColor(e) {
+
+    if (e.target.id == 'btnPencil') {
+        const buttonPencil = document.getElementById('btnPencil');
+        buttonPencil.style.background = '#3D9970';
+        const buttonEraser = document.getElementById('btnEraser');
+        buttonEraser.style.background = '#FF851B';
+        const buttonRainbow = document.getElementById('btnRainbow');
+        buttonRainbow.style.background = '#FF851B'
+    }
+    else
+        if (e.target.id == 'btnEraser') {
+            const buttonPencil = document.getElementById('btnPencil');
+            buttonPencil.style.background = '#FF851B';
+            const buttonEraser = document.getElementById('btnEraser');
+            buttonEraser.style.background = '#3D9970';
+            const buttonRainbow = document.getElementById('btnRainbow');
+            buttonRainbow.style.background = '#FF851B'
+        }
+        else {
+            if (e.target.id == 'btnRainbow') {
+                const buttonPencil = document.getElementById('btnPencil');
+                buttonPencil.style.background = '#FF851B';
+                const buttonEraser = document.getElementById('btnEraser');
+                buttonEraser.style.background = '#FF851B';
+                const buttonRainbow = document.getElementById('btnRainbow');
+                buttonRainbow.style.background = '#3D9970'
+            }
+        }
+
+
+}
+
 function pencilWorking() {
+
     // changing button colors to indicate active button & remove 
     //  previously active button:
     const buttonPencil = document.getElementById('btnPencil');
@@ -105,6 +139,8 @@ function pencilWorking() {
 
 
     const getSquares = document.querySelectorAll('.square');
+    debugger;
+    getSquares.removeEventListener("mousemove", fillRandomColors());
     getSquares.forEach(squareNod => {
         squareNod.addEventListener('mousemove', (e) => {
 
@@ -114,7 +150,7 @@ function pencilWorking() {
                 debugger;
                 const inputColorNode = document.getElementById('inputColor').value;
                 squareNod.style.background = inputColorNode;
-                
+
             }
         });
 
@@ -213,20 +249,44 @@ buttonRandomGrid.addEventListener('click', (e) => {
     document.getElementById('gridText').value = randomNum;
 });
 
+//  below flag is used to alternate between simple & color modes: 
+let colorFlag = false;
 const buttonPencil = document.getElementById('btnPencil');
-buttonPencil.addEventListener('click', pencilWorking);
+buttonPencil.addEventListener('click', e => {
+    changeButtonColor(e);
+    // changing button colors to indicate active button & remove 
+    //  previously active button:
+    colorFlag = false;
+    fillSquares(e)
+});
 const buttonEraser = document.getElementById('btnEraser');
-buttonEraser.addEventListener('click', eraserWorking);
+buttonEraser.addEventListener('click', e => {
+    changeButtonColor(e);
+    eraserWorking();
+});
 
 const buttonRainbow = document.getElementById('btnRainbow');
-buttonRainbow.addEventListener('click', fillRandomColors)
+buttonRainbow.addEventListener('click', e => {
+    changeButtonColor(e);
+    colorFlag = true;
+    fillSquares(e);
+});
 
-function fillSquares(inputColor = '#111111', colorPencil = 'false') {
+
+
+
+function fillSquares() {
     // for default sketch...
-    const inputColorNode = document.getElementById(inputColor);
+    // if(!inp)
+    const inputColorNode = document.getElementById('inputColor').value;
     const getSquares = document.querySelectorAll('.square');
+    //  Below listener is in a function to be called again & 
+    // again whenever we are creating grid without page refresh because 
+    // when squares are removed on creating a new grid, below related 
+    // listener does not work & has to be created again. 
     getSquares.forEach(squareNod => {
         squareNod.addEventListener('mousemove', (e) => {
+            debugger;
             // "The mousemove event is fired when a pointing device (usually a mouse) 
             // is moved while over an element." When you're dragging the element, mouse 
             // is not moving over it - instead it moves synchronously with the element. 
@@ -237,13 +297,21 @@ function fillSquares(inputColor = '#111111', colorPencil = 'false') {
             if (e.buttons == 1) {
                 // could call the inputColor function here, but it would have called that function 
                 // again & again instead of just at changing color at color input.
-                squareNod.style.background = inputColorNode;
+                if (colorFlag == true) { // to choose whether to use color pencil or simple
+                    squareNod.style.background = createRandomHsl();
+                } else {
+                    squareNod.style.background = inputColorNode;
+                }
             }
         });
         //  to also allow color fill on the simple click too:
         squareNod.addEventListener('click', (e) => {
-            e.preventDefault();
-            squareNod.style.background = inputColorNode;
+            // e.preventDefault();
+            if (colorFlag == true) {
+                squareNod.style.background = createRandomHsl();
+            } else {
+                squareNod.style.background = inputColorNode;
+            }
         })
 
 
