@@ -1,6 +1,6 @@
 // e is an optional parameter here.
 
-let typeFlag = 'single';
+let typeFlag = 'singleColor';
 
 function createGrid(gridSize) {
 
@@ -70,7 +70,7 @@ function changeButtonColor(e) {
 
 }
 
-function fillSquares() {
+function fillSquares(e, count = 0) {
 
     const inputColorNode = document.getElementById('inputColor').value;
     const getSquares = document.querySelectorAll('.square');
@@ -79,24 +79,30 @@ function fillSquares() {
     // when squares are removed on creating a new grid, below related 
     // listener does not work & has to be created again. 
     getSquares.forEach(squareNod => {
-        squareNod.addEventListener('mousemove', (e) => {
-            // "The mousemove event is fired when a pointing device (usually a mouse) 
+        squareNod.addEventListener('mouseenter', (e) => {
+            // "The mousemove(mouseenter in our case) event is fired when a pointing device (usually a mouse) 
             // is moved while over an element." When you're dragging the element, mouse 
             // is not moving over it - instead it moves synchronously with the element. 
             // https://stackoverflow.com/questions/46186173/are-mousemove-events-disabled-while-dragging-an-element
             // So, to prevent drag on trying to hold and move mouse :
-            e.preventDefault();
+            // e.preventDefault();
             // works by preventing default handling of event i think. But documentation mentions default action prevention.  
-            if (e.buttons == 1) {
+            if (e.buttons == 1) { // only fill if left click is pressed during move
                 
-                if (typeFlag == 'single' || typeFlag == 'selected') { // to choose whether to use color pencil or simple
+                if (typeFlag == 'singleColor' || typeFlag == 'selectedColor') { // to choose whether to use color pencil or simple
                     // could call the inputColor function here, but it would have called that function 
                 // again & again instead of just getting color at color input.
                     squareNod.style.background = inputColorNode;
 
                 } else
-                    if (typeFlag == 'random') {
+                    if (typeFlag == 'randomColor') {
                         squareNod.style.background = createRandomHsl();
+                        count += 1;
+                        //  after 10 passes, change square to black color:
+                        if (count == 10) {
+                            squareNod.style.background = '#111111';
+                            count = 0;
+                        }
                     }
                     else
                         if (typeFlag == 'eraser') {
@@ -107,13 +113,19 @@ function fillSquares() {
         //  to also allow actions on the simple click too:
         squareNod.addEventListener('click', (e) => {
             // e.preventDefault(); as the drag was not an issue on simple click here, commented.
-            if (typeFlag == 'single' || typeFlag == 'selected') { // to choose whether to use selected color, eraser 
+            if (typeFlag == 'singleColor' || typeFlag == 'selectedColor') { // to choose whether to use selected color, eraser 
                 // or random color
                 squareNod.style.background = inputColorNode;
 
             } else
-                if (typeFlag == 'random') {
+                if (typeFlag == 'randomColor') {
                     squareNod.style.background = createRandomHsl();
+                    // let count = 0;
+                    count += 1;
+                    if (count == 10) {
+                        squareNod.style.background = '#111111';
+                        count = 0;
+                    }
                 }
                 else
                     if (typeFlag == 'eraser') {
@@ -170,7 +182,7 @@ const inputColorNode = document.getElementById('inputColor');
 // inputColorNode.oninput = (e) => fillSquares(e);
 
 inputColorNode.addEventListener('input', e => {
-    typeFlag = 'selected';
+    typeFlag = 'selectedColor';
     // changing button colors to indicate active button & remove 
     //  previously active button:
     changeButtonColor(e);
@@ -200,7 +212,7 @@ buttonRandomGrid.addEventListener('click', (e) => {
 const buttonPencil = document.getElementById('btnSingle');
 buttonPencil.addEventListener('click', e => {
 
-    typeFlag = 'single';
+    typeFlag = 'singleColor';
     // changing button colors to indicate active button & remove 
     //  previously active button:
     changeButtonColor(e);
@@ -210,9 +222,10 @@ buttonPencil.addEventListener('click', e => {
 
 const buttonRainbow = document.getElementById('btnRandom');
 buttonRainbow.addEventListener('click', e => {
-    typeFlag = 'random';
+    let count = 0;
+    typeFlag = 'randomColor';
     changeButtonColor(e);
-    fillSquares(e);
+    fillSquares(e, count);
 });
 
 const buttonEraser = document.getElementById('btnEraser');
