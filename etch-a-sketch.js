@@ -39,38 +39,43 @@ function removePreviousGrid() {
 
 function changeButtonColor(e) {
 
-    if ((e.target.id == 'btnSingle') || (e.target.id == 'inputColor')) {
-        const buttonPencil = document.getElementById('btnSingle');
-        buttonPencil.style.background = '#3D9970';
-        const buttonEraser = document.getElementById('btnEraser');
-        buttonEraser.style.background = '#FF851B';
-        const buttonRainbow = document.getElementById('btnRandom');
-        buttonRainbow.style.background = '#FF851B'
-    }
-    else
-        if (e.target.id == 'btnEraser') {
-            const buttonPencil = document.getElementById('btnSingle');
-            buttonPencil.style.background = '#FF851B';
-            const buttonEraser = document.getElementById('btnEraser');
-            buttonEraser.style.background = '#3D9970';
-            const buttonRainbow = document.getElementById('btnRandom');
-            buttonRainbow.style.background = '#FF851B'
-        }
-        else {
-            if (e.target.id == 'btnRandom') {
+    switch (e.target.id) {
+        case 'btnSingle':
+        case 'inputColor':
+            {
+                const buttonPencil = document.getElementById('btnSingle');
+                buttonPencil.style.background = '#3D9970';
+                const buttonEraser = document.getElementById('btnEraser');
+                buttonEraser.style.background = '#FF851B';
+                const buttonRainbow = document.getElementById('btnRandom');
+                buttonRainbow.style.background = '#FF851B';
+                break;
+            }
+        case 'btnEraser':
+            {
+                const buttonPencil = document.getElementById('btnSingle');
+                buttonPencil.style.background = '#FF851B';
+                const buttonEraser = document.getElementById('btnEraser');
+                buttonEraser.style.background = '#3D9970';
+                const buttonRainbow = document.getElementById('btnRandom');
+                buttonRainbow.style.background = '#FF851B';
+                break;
+            }
+        case 'btnRandom':
+            {
                 const buttonPencil = document.getElementById('btnSingle');
                 buttonPencil.style.background = '#FF851B';
                 const buttonEraser = document.getElementById('btnEraser');
                 buttonEraser.style.background = '#FF851B';
                 const buttonRainbow = document.getElementById('btnRandom');
-                buttonRainbow.style.background = '#3D9970'
+                buttonRainbow.style.background = '#3D9970';
+                break;
             }
-        }
-
+    }
 
 }
 
-function fillSquares(e, count = 0) {
+function fillSquares(e = undefined, count = 0) {
 
     const inputColorNode = document.getElementById('inputColor').value;
     const getSquares = document.querySelectorAll('.square');
@@ -79,59 +84,71 @@ function fillSquares(e, count = 0) {
     // when squares are removed on creating a new grid, below related 
     // listener does not work & has to be created again. 
     getSquares.forEach(squareNod => {
-        squareNod.addEventListener('mouseenter', (e) => {
-            // "The mousemove(mouseenter in our case) event is fired when a pointing device (usually a mouse) 
+        squareNod.addEventListener('mousemove', (e) => {
+            // "The mousemove event is fired when a pointing device (usually a mouse) 
             // is moved while over an element." When you're dragging the element, mouse 
             // is not moving over it - instead it moves synchronously with the element. 
             // https://stackoverflow.com/questions/46186173/are-mousemove-events-disabled-while-dragging-an-element
             // So, to prevent drag on trying to hold and move mouse :
             // e.preventDefault();
-            // works by preventing default handling of event i think. But documentation mentions default action prevention.  
-            if (e.buttons == 1) { // only fill if left click is pressed during move
-                
-                if (typeFlag == 'singleColor' || typeFlag == 'selectedColor') { // to choose whether to use color pencil or simple
-                    // could call the inputColor function here, but it would have called that function 
-                // again & again instead of just getting color at color input.
-                    squareNod.style.background = inputColorNode;
+            // works by preventing default handling of event i think. But documentation mentions default action prevention. 
+            //  We are preventing drag on mousemove on squares here.
+            e.preventDefault();
+        });
+        squareNod.addEventListener('mouseover', (e) => {
 
-                } else
-                    if (typeFlag == 'randomColor') {
+            if (e.buttons == 1) { // only fill if left click is pressed during move
+
+                switch (typeFlag) {
+                    case 'singleColor':
+                    case 'selectedColor':
+                        // to choose whether to use color pencil or simple
+                        // could call the inputColor function here, but it would have called that function 
+                        // again & again instead of just getting color at color input.
+                        squareNod.style.background = inputColorNode;
+                        break;
+
+                    case 'randomColor':
                         squareNod.style.background = createRandomHsl();
                         count += 1;
-                        //  after 10 passes, change square to black color:
+                        // console.log(count);
                         if (count == 10) {
+                            //  Black square on every 10th square:
                             squareNod.style.background = '#111111';
                             count = 0;
                         }
-                    }
-                    else
-                        if (typeFlag == 'eraser') {
-                            squareNod.style.background = '#FFFFFF';
-                        }
+                        break;
+
+                    case 'eraser':
+                        squareNod.style.background = '#FFFFFF';
+                        break;
+                }
             }
         });
-        //  to also allow actions on the simple click too:
-        squareNod.addEventListener('click', (e) => {
-            // e.preventDefault(); as the drag was not an issue on simple click here, commented.
-            if (typeFlag == 'singleColor' || typeFlag == 'selectedColor') { // to choose whether to use selected color, eraser 
-                // or random color
-                squareNod.style.background = inputColorNode;
+        //  to also allow actions on the simple click & starting pressed square too:
 
-            } else
-                if (typeFlag == 'randomColor') {
+        squareNod.addEventListener('mousedown', (e) => {
+
+            switch (typeFlag) {
+                case 'singleColor':
+                case 'selectedColor':
+                    squareNod.style.background = inputColorNode;
+                    break;
+                case 'randomColor':
                     squareNod.style.background = createRandomHsl();
-                    // let count = 0;
                     count += 1;
                     if (count == 10) {
                         squareNod.style.background = '#111111';
                         count = 0;
                     }
-                }
-                else
-                    if (typeFlag == 'eraser') {
-                        squareNod.style.background = '#FFFFFF';
-                    }
-        })
+                    break;
+                case 'eraser':
+                    squareNod.style.background = '#FFFFFF';
+                    break;
+
+            }
+
+        });
 
 
     });
