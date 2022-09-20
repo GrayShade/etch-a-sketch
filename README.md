@@ -8,6 +8,6 @@
     * On some grid sizes, a bottom scroll pops up. Specially on higher grid sizes like may above 80 ones. 
 * Future Ideas: <br />
     * Grid size to be changed dynamically on different resolutions instead of using scroll. Any other work around to get rid of scroll. 
-    * Adding more options maybe
+    * Adding more options, secure input, limit imposing etc
     * deep random colors instead of current ones. 
 
