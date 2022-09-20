@@ -1,5 +1,3 @@
-// e is an optional parameter here.
-
 let typeFlag = 'singleColor';
 
 function createGrid(gridSize) {
@@ -167,15 +165,26 @@ document.getElementById('gridText').value = 16;
 
 getGridText.addEventListener('input', (e) => {
     const input = e.target.value
-    if (input == null || input > 64 || input < 0 || typeof(+input) !== 'number') {
-        getGridText.value = 1;
+
+    switch (true) {
+        case input > 64:
+            getGridText.value = 1;
+            break;
+        case input < 0:
+            getGridText.value = 64;
+            break;
     }
 
     removePreviousGrid();
-    if (getGridText.value == '') {
-    getGridSlider.value = 0;
-    }else
-    getGridSlider.value = getGridText.value;
+
+
+    switch (true) {
+        case getGridText.value == '':
+            getGridSlider.value = 0;
+            break;
+        default:
+            getGridSlider.value = getGridText.value;
+    }
     createGrid(getGridText.value);
 
 });
@@ -194,7 +203,7 @@ getGridSlider.addEventListener('input', () => {
     if (getGridSlider.value < 1) {
         getGridSlider.value = 0;
     }
-    
+
     removePreviousGrid();
     createGrid(getGridSlider.value);
 
