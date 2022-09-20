@@ -166,12 +166,15 @@ getGridSlider.value = 16;
 document.getElementById('gridText').value = 16;
 
 getGridText.addEventListener('input', (e) => {
-
-    if (e.target.value == null || e.target.value == '' || e.target.value > 100) {
-        getGridText.value = 16;
+    const input = e.target.value
+    if (input == null || input > 64 || input < 0 || typeof(+input) !== 'number') {
+        getGridText.value = 1;
     }
 
     removePreviousGrid();
+    if (getGridText.value == '') {
+    getGridSlider.value = 0;
+    }else
     getGridSlider.value = getGridText.value;
     createGrid(getGridText.value);
 
@@ -188,6 +191,10 @@ getGridSlider.addEventListener('input', () => {
     // let sliderSize = e.target.value;
 
     getGridText.value = getGridSlider.value;
+    if (getGridSlider.value < 1) {
+        getGridSlider.value = 0;
+    }
+    
     removePreviousGrid();
     createGrid(getGridSlider.value);
 
